@@ -3,7 +3,8 @@ syntax = "proto3";
 package com.sinlov.demo.micro.restful;
 
 service Version {
-    rpc Version(Request) returns (Response) {}
+    rpc Version (Request) returns (Response) {
+    }
 }
 
 message Request {
@@ -12,4 +13,6 @@ message Request {
 
 message Response {
     string msg = 1;
+    uint32 vc = 2;
+    string vn = 3;
 }

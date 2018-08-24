@@ -1,24 +1,29 @@
 package main
 
 import (
-	"github.com/micro/go-micro"
 	"time"
-	api "github.com/sinlov/go-micro-restful-demo/api"
 	"log"
+	"github.com/micro/go-micro"
+	"github.com/sinlov/go-micro-restful-demo/api"
 )
 
 func main() {
 	service := micro.NewService(
-		micro.Name("go.micro.srv.greeter"),
-		micro.RegisterTTL(time.Second * 30),
-		micro.RegisterInterval(time.Second * 10),
+		micro.Name("go.micro.restful.demo"),
+		micro.Version("last"),
+		micro.RegisterTTL(time.Second*30),
+		micro.RegisterInterval(time.Second*10),
+		micro.Metadata(map[string]string{
+			"type": "RESTful demo",
+		}),
 	)
 
 	// optionally setup command line usage
 	service.Init()
 
+	server := service.Server()
 	// Register Handlers
-	api.RegisterVersionHandler(service.Server(), new(api.Version))
+	server.Handle(server.NewHandler(&api.Version{}))
 
 	// Run server
 	if err := service.Run(); err != nil {
