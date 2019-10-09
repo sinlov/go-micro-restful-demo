@@ -1,10 +1,10 @@
 package main
 
 import (
-	"time"
-	"log"
 	"github.com/micro/go-micro"
 	"github.com/sinlov/go-micro-restful-demo/api"
+	"log"
+	"time"
 )
 
 func main() {
@@ -23,7 +23,10 @@ func main() {
 
 	server := service.Server()
 	// Register Handlers
-	server.Handle(server.NewHandler(&api.Version{}))
+	err := server.Handle(server.NewHandler(&api.Version{}))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Run server
 	if err := service.Run(); err != nil {
