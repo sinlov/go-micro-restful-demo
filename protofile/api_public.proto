@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package demo;
+option go_package = "demo";
+
+message ApiPublicRequest {
+    int64 offset = 1;
+    int64 limit = 2;
+    int64 page = 3;
+    int64 platform = 4;
+}
+
+message ApiPublicResponse {
+    int64 offset = 1;
+    int64 limit = 2;
+    int64 page = 3;
+    int64 total = 4;
+}

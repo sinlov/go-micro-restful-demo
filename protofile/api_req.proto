@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package demo;
+option go_package = "demo";
+
+import "api_public.proto";
+// biz
+import "version.proto";
+
+message ApiRequest {
+    ApiPublicRequest public = 1;
+
+    // 以下是返回的具体内容,每个接口需要的结构都需要在这指定
+    VersionReq versionReq = 10;
+}

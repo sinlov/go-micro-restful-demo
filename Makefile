@@ -9,6 +9,9 @@ DIST_ARCH := amd64
 DIST_OS_DOCKER ?= linux
 DIST_ARCH_DOCKER ?= amd64
 
+PROJ_MICRO_REGISTRY_TYPE=etcd
+PROJ_MICRO_REGISTRY_ADDRESS=10.0.0.1:2379
+
 ROOT_NAME ?= go-micro-restful-demo
 ROOT_DOCKER_SERVICE ?= $(ROOT_NAME)
 ROOT_BUILD_PATH ?= ./build
@@ -25,17 +28,26 @@ ROOT_LOG_PATH ?= ./log
 # can use as https://goproxy.io/ https://gocenter.io https://mirrors.aliyun.com/goproxy/
 INFO_GO_PROXY ?= https://goproxy.io/
 
-init:
+checkEnv:
 	@echo "~> start init this project"
 	@echo "-> check version"
 	go version
 	@echo "-> check env golang"
 	go env
 	@echo "-> check env protobuf"
+	@echo "~> if check error you can run to fix"
+	@echo " go get -v github.com/golang/protobuf/{proto,protoc-gen-go}"
+	@echo " go get -v github.com/micro/protoc-gen-micro"
 	protoc --version
+	@echo "~> micro Discovery can use: etcd consul, kubernetes, zookeeper"
+	@echo "~> more info see https://github.com/micro/go-plugins"
+	@echo ""
+	@echo "~> use etcd see: https://github.com/etcd-io/etcd"
+	etcd --version
+	@echo "~> use consul see: https://learn.hashicorp.com/consul/getting-started/install"
 	@echo "-> check env micro"
-	@echo "~> if error check error just see https://github.com/micro/micro#install"
-	micro -h
+	@echo "~> if error check error just see https://micro.mu/docs/runtime.html#install-micro"
+	micro --version
 	@echo "~> you can use [ make help ] see more task"
 	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod vendor
 	@echo "~> you can use [ make help ] see more task"
@@ -88,6 +100,20 @@ checkReleaseDistPath:
 
 checkReleaseOSDistPath:
 	@if [ ! -d ${ROOT_REPO_OS_DIST_PATH} ]; then mkdir -p ${ROOT_REPO_OS_DIST_PATH} && echo "~> mkdir ${ROOT_REPO_OS_DIST_PATH}"; fi
+
+protoUpdate:
+	# this task for update module, do not edit out proto file!
+	@echo "just update proto at folder protofile"
+	cd protofile && bash build_proto.sh
+
+microList:
+	MICRO_REGISTRY=$(PROJ_MICRO_REGISTRY_TYPE) micro list services
+
+microApi:
+	MICRO_REGISTRY=$(PROJ_MICRO_REGISTRY_TYPE) micro api
+
+microWeb:
+	MICRO_REGISTRY=$(PROJ_MICRO_REGISTRY_TYPE) micro web
 
 buildMain:
 	@go build -o build/main main.go
@@ -151,12 +177,17 @@ dockerCleanImages:
 	(while :; do echo 'y'; sleep 3; done) | docker image prune
 
 help:
-	@echo "make init - check base env of this project"
+	@echo "make checkEnv - check base env of this project"
 	@echo "make dep - check dependencies of project"
 	@echo "make dependenciesGraph - see dependencies graph of project"
 	@echo "make dependenciesTidy - tidy dependencies graph of project"
 	@echo ""
 	@echo "make clean - remove binary file and log files"
+	@echo ""
+	@echo "micro run as"
+	@echp "make microList"
+	@echp "make microWeb"
+	@echp "make microApi"
 	@echo ""
 	@echo "-- now build name: $(ROOT_NAME) version: $(DIST_VERSION)"
 	@echo "-- testOS or releaseOS will out abi as: $(DIST_OS) $(DIST_ARCH) --"

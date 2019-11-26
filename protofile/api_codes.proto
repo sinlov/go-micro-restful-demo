@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package demo;
+option go_package = "demo";
+
+enum ApiCodes {
+    Omit = 0;
+    StatusOK = 200; // RFC 7231, 6.3.1
+
+    StatusMovedPermanently = 301; // RFC 7231, 6.4.2 去状态重定向
+    StatusFound = 302; // RFC 7231, 6.4.3 带状态重定向
+
+    StatusBadRequest = 400; // RFC 7231, 6.5.1 请求错误
+    StatusUnauthorized = 401; // RFC 7235, 3.1 未授权：登录失败
+    StatusPaymentRequired = 402; // RFC 7231, 6.5.2 未授权：服务器配置问题导致登录失败
+    StatusForbidden = 403; // RFC 7231, 6.5.3 没有权限 禁止访问
+    StatusNotFound = 404; // RFC 7231, 6.5.4 not found 无法找到文件
+    StatusMethodNotAllowed = 405; // RFC 7231, 6.5.5 资源被禁止 方法不对 (POST,PUT,GET)
+    StatusNotAcceptable = 406; // RFC 7231, 6.5.6 无法接受不能通过
+
+    StatusInternalServerError = 500; // RFC 7231, 6.6.1 内部服务器错误
+    StatusBadGateway = 502; // RFC 7231, 6.6.3 网关错误
+    StatusServiceUnavailable = 503; // RFC 7231, 6.6.4 服务不可用。这个错误代码为 IIS 6.0 所专用
+    StatusGatewayTimeout = 504; // RFC 7231, 6.6.5 网关超时
+    StatusHTTPVersionNotSupported = 505; // RFC 7231, 6.6.6 HTTP 版本不受支持
+
+    CustomParamsErr = 610; // 自定义 参数错误
+    CustomCaptErr = 611; // 自定义 验证码错误
+}

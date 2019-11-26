@@ -1,0 +1,11 @@
+version: latest
+runmode: debug               # run mode: debug, release, test
+addr: :39000                  # HTTP port will cover by env ENV_AUTO_HOST and most in docker use env ENV_WEB_HOST
+name: go.micro.restful.demo              # name of API Server
+
+sslEnable: false                    # isEnable ssl mode this will cover by env ENV_WEB_HTTPS_ENABLE
+basePath: /v1                     # api version
+
+register:
+  ttl: 30
+  Interval: 10

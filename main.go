@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/micro/go-micro"
-	"github.com/sinlov/go-micro-restful-demo/api"
+	"github.com/sinlov/go-micro-restful-demo/handler"
 	"log"
 	"time"
 )
@@ -23,7 +23,7 @@ func main() {
 
 	server := service.Server()
 	// Register Handlers
-	err := server.Handle(server.NewHandler(&api.Version{}))
+	err := server.Handle(server.NewHandler(&handler.Version{}))
 	if err != nil {
 		log.Fatal(err)
 	}

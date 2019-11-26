@@ -1,26 +1,75 @@
-# before USE
+# info
 
-- install golang
-- install consul [https://www.consul.io/](https://www.consul.io/)
+## before-use
+
+- install golang SDK [gomirrors.org](https://gomirrors.org/) `must 1.13+`
+- install docker
+- Discovery by `etcd` more info see [https://github.com/etcd-io/etcd](https://github.com/etcd-io/etcd)
+> if use consul see [https://www.consul.io/](https://www.consul.io/)
 - install Protobuf [https://github.com/protocolbuffers/protobuf](https://github.com/protocolbuffers/protobuf)
+- install protoc-gen-micro [github.com/micro/protoc-gen-micro](https://github.com/micro/protoc-gen-micro)
+
+```bash
+go get -v github.com/golang/protobuf/{proto,protoc-gen-go}
+go get -v github.com/micro/protoc-gen-micro
+```
+- install micro cli
+
+## use release binaries
+
+```bash
+# Mac OS or Linux
+curl -fsSL https://micro.mu/install.sh | /bin/bash
+
+# Windows
+powershell -Command "iwr -useb https://micro.mu/install.ps1 | iex"
+```
+
+# run-project
+
+## get micro cli
+
+### use official images
+
+get docker images `micro/micro` page is https://hub.docker.com/r/micro/micro
+```bash
+docker pull micro/micro
+```
+
+## init code
 
 - install depends
 
-```sh
-go get -u github.com/micro/micro
+```bash
+make dep
 ```
 
-if use docker
+- this task will add base depends of this project at project `vendor` folder
 
-```sh
-docker pull microhq/micro
+| lib                             | version | url                                                                |
+|:--------------------------------|:--------|:-------------------------------------------------------------------|
+| github.com/micro/go-micro       | v1.16.0 | [github.com/micro/go-micro](https://github.com/micro/go-micro)     |
+| github.com/spf13/viper          | v1.5.0  | [github.com/spf13/viper](https://github.com/spf13/viper)           |
+
+more version info see [go.mod](go.mod)
+
+## update proto module
+
+```bash
+make protoUpdate
 ```
 
-https://hub.docker.com/r/microhq/micro
+## run Discovery
+
+```bash
+etcd
+```
+
+> use different cli for run discovery
 
 # document
 
-https://micro.mu/docs/
+[micro.mu/docs/framework](https://micro.mu/docs/framework.html)
 
 # run Service Discovery
 
@@ -37,6 +86,7 @@ micro web
 ```
 
 see at [http://localhost:8082/](http://localhost:8082/)
+config at [http://localhost:8082/client](http://localhost:8082/client)
 
 # run server
 

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package demo;
+option go_package = "demo";
+//option java_package = "com.sinlov.demo.micro.restful";
+//option java_outer_classname = "Api_response";
+
+import "api_req.proto";
+import "api_resp.proto";
+
+service Version {
+    rpc Version (demo.ApiRequest) returns (demo.ApiResponse) {
+    }
+}

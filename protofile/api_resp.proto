@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package demo;
+option go_package = "demo";
+
+import "api_codes.proto";
+import "api_public.proto";
+// biz
+import "version.proto";
+
+message ApiResponse {
+    ApiCodes code = 1; // 返回码
+    string msg = 2; // 消息
+    ApiPublicResponse public = 3; // 公共返回参数
+
+    // 以下是返回的具体内容,每个接口需要的结构都需要在这指定
+    VersionResp versionResp = 10;
+}
